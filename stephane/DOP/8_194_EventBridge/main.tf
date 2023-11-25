@@ -25,6 +25,13 @@ resource "aws_cloudwatch_event_bus" "DemoEventBridge" {
   name = var.DemoName
 }
 
+resource "aws_cloudwatch_event_target" "sns" {
+ rule = aws_cloudwatch_event_rule.DemoEventBridge.name
+ target_id = "SendToSns"
+ arn = aws_sns_topic.DemoEventBridge.arn
+ event_bus_name=var.DemoName
+}
+
 resource "aws_cloudwatch_event_rule" "DemoEventBridge" {
   depends_on = [ aws_cloudwatch_event_bus.DemoEventBridge ]
   name           = var.DemoName
